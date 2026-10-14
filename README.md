@@ -15,7 +15,7 @@ Proyek ini menggunakan [Baileys](https://github.com/WhiskeySockets/Baileys). Cak
 
 ## Persiapan
 
-Siapkan **Node.js 20.9 atau lebih baru**, npm, Git, koneksi internet, dan WhatsApp di ponsel untuk memindai QR. Node.js dapat diunduh dari [nodejs.org](https://nodejs.org/).
+Siapkan **Node.js 20.x mulai 20.9, atau Node.js 22 dan lebih baru (Node.js 21 tidak didukung)**, npm, Git, koneksi internet, dan WhatsApp di ponsel untuk memindai QR. Node.js dapat diunduh dari [nodejs.org](https://nodejs.org/).
 
 Periksa versi di PowerShell:
 
