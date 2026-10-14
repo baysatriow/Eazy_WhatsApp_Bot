@@ -34,7 +34,7 @@ On a transient disconnect, reconnect and continue logging. If WhatsApp reports t
 - `.gitignore`: exclude dependencies, linked-device credentials, and chat logs.
 - `README.md`: setup and operator instructions.
 
-The first implementation will target Node.js 20 or newer. Dependencies will be pinned by the generated lockfile. No database, HTTP server, dashboard, environment secrets, or media storage is needed for this local workflow.
+The first implementation will target Node.js 20.9 or newer. Dependencies will be pinned by the generated lockfile. No database, HTTP server, dashboard, environment secrets, or media storage is needed for this local workflow.
 
 ## Data and privacy
 
@@ -50,7 +50,7 @@ The log contains chat message text and identifiers and should be treated as priv
 
 ## Acceptance criteria
 
-1. `npm install` completes on Node.js 20 or newer.
+1. `npm install` completes on Node.js 20.9 or newer.
 2. `npm start` starts the logger and displays a QR code when no saved session exists.
 3. The user can scan that QR code and see a connected status without the app sending any message.
 4. A new direct message and a new group message appear in the terminal and in the current day's JSONL file, with sender/chat context and readable content where available.
