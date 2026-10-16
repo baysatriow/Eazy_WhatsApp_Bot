@@ -30,8 +30,11 @@ function parseAllowedGroups(value) {
 }
 
 function parseBoolean(value, defaultValue) {
-  if (value === undefined || value === null || value === '') return defaultValue
-  return String(value).trim().toLowerCase() === 'true'
+  if (value === undefined || value === null || String(value).trim() === '') return defaultValue
+  const normalized = String(value).trim().toLowerCase()
+  if (normalized === 'true') return true
+  if (normalized === 'false') return false
+  return defaultValue
 }
 
 export function loadConfig(environment = process.env) {

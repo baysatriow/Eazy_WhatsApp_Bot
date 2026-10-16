@@ -4,8 +4,8 @@ function phoneFromJid(jid) {
   if (typeof jid !== 'string') return null
   const suffix = PHONE_JID_SUFFIXES.find((candidate) => jid.endsWith(candidate))
   if (!suffix) return null
-  const number = jid.slice(0, -suffix.length)
-  return /^[1-9]\d{7,14}$/.test(number) ? number : null
+  const match = jid.slice(0, -suffix.length).match(/^([1-9]\d{7,14})(?::\d+)?$/)
+  return match ? match[1] : null
 }
 
 function collectContextInfo(message) {
