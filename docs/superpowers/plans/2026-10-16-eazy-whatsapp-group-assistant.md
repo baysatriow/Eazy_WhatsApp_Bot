@@ -21,7 +21,7 @@
 - `BOT_TAG_ALL_ENABLED` defaults to `false`; unsupported `@all` never falls back to individual mentions.
 - Keep existing live `notify` message logging for private and group chats.
 - Keep `.env`, auth state, logs, and the SQLite database out of Git.
-- README remains clear, has no AI references, and documents WhatsApp/Baileys limits.
+- README remains clear and documents configuration and WhatsApp/Baileys limits.
 - Commits use Conventional Commit subjects without co-author or attribution trailers.
 
 ## Review Focus
@@ -93,6 +93,6 @@
 - [x] Wire configuration, storage, command handling, and scheduler into the current connect/reconnect/shutdown lifecycle.
 - [x] Preserve QR login, self/status/newsletter filters, current JSONL format, and shutdown queue draining.
 - [x] Add `.env.example` with safe placeholders; ignore `.env*` while keeping `.env.example` tracked, and ignore `data/`.
-- [x] Rewrite the README setup, allowlist/group behavior, notes/reminders/`@all` commands, local data/backup guidance, and live-account verification boundary without AI references.
+- [x] Rewrite the README setup, allowlist/group behavior, notes/reminders/`@all` commands, local data/backup guidance, and live-account verification boundary with user-focused wording.
 - [x] Review the final diff for clean lifecycle handling, configuration/privacy documentation, and public-repository hygiene.
 - [x] Commit as `docs: document group assistant setup and commands`.
