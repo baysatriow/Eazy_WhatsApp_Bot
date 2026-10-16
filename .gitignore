@@ -1,4 +1,7 @@
 node_modules/
 auth_info_baileys/
 logs/
+data/
+.env*
+!.env.example
 npm-debug.log*
