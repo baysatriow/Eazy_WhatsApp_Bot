@@ -1,6 +1,6 @@
 # Eazy WhatsApp Group Assistant Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Evolve the incoming-message logger into an owner-restricted WhatsApp assistant with private/group notes, persistent reminders, and opt-in group `@all`.
 
@@ -50,13 +50,13 @@
 - Note methods take `chatId` and never query across chat IDs; failed deletes/cancels return `false`. Reminder methods persist UTC epoch milliseconds and delivery state; claims return rows moved to `sending` in one transaction.
 - `expireOverdueReminders(beforeMs)` globally expires pending/sending reminders whose due time is older than `beforeMs` and returns the number expired.
 
-- [ ] Add `dotenv` and `better-sqlite3@^12.4.1` dependencies while preserving the current Node engine range.
-- [ ] Implement `loadConfig` with a strict comma-separated phone allowlist; invalid entries make the command allowlist unusable, while `logIncoming` remains enabled by default.
-- [ ] Implement `isCommandAllowed` for direct and group messages; enforce optional `BOT_ALLOWED_GROUPS`, explicit bot mentions in groups, and fail-closed LID handling.
-- [ ] Implement one-file SQLite storage with parent-directory creation, busy timeout, WAL mode, versioned schema initialization, per-chat notes, and reminder retry/status fields.
-- [ ] Implement global expiration of pending/sending reminders older than the scheduler's 24-hour recovery cutoff.
-- [ ] Review the diff for allowlist parsing, cross-chat data isolation, SQLite error behavior, and compatibility with the declared Node releases.
-- [ ] Commit as `feat: add secure configuration and sqlite storage`.
+- [x] Add `dotenv` and `better-sqlite3@^12.4.1` dependencies while preserving the current Node engine range.
+- [x] Implement `loadConfig` with a strict comma-separated phone allowlist; invalid entries make the command allowlist unusable, while `logIncoming` remains enabled by default.
+- [x] Implement `isCommandAllowed` for direct and group messages; enforce optional `BOT_ALLOWED_GROUPS`, explicit bot mentions in groups, and fail-closed LID handling.
+- [x] Implement one-file SQLite storage with parent-directory creation, busy timeout, WAL mode, versioned schema initialization, per-chat notes, and reminder retry/status fields.
+- [x] Implement global expiration of pending/sending reminders older than the scheduler's 24-hour recovery cutoff.
+- [x] Review the diff for allowlist parsing, cross-chat data isolation, SQLite error behavior, and compatibility with the declared Node releases.
+- [x] Commit as `feat: add secure configuration and sqlite storage`.
 
 ### Task 2: Commands and reminder delivery
 
@@ -69,13 +69,13 @@
 - `startReminderScheduler({ store, getSocket, timeZone, intervalMs = 15000 })` returns an async `stop()` function; `getSocket()` returns the currently connected socket or `null`.
 - Supported commands are `/bantuan`, `/catat`, `/catatan`, `/cari`, `/hapus-catatan`, `/ingat`, `/jadwal`, `/batal-jadwal`, and `/tag-semua`.
 
-- [ ] Implement safe text extraction and command parsing after removing the explicit bot mention; only parse leading slash commands.
-- [ ] Implement notes commands using only the current chat's records; bound list/search response sizes and require exact IDs for delete/cancel.
-- [ ] Implement one-time reminders in the configured timezone, reject malformed/past local times, and keep each reminder bound to its originating chat.
-- [ ] Implement a sequential scheduler with a 15-second default interval, a 24-hour catch-up window, overdue labeling, global expiry before claiming work, and retry of unsent due work.
-- [ ] Implement `/tag-semua` only in groups when explicitly enabled; send with Baileys `mentionAll`, report failures in the source group, and never mass-mention individual members as fallback.
-- [ ] Review the diff for privacy scope, command authorization, time parsing, scheduler retry semantics, and mention behavior.
-- [ ] Commit as `feat: add notes reminders and group commands`.
+- [x] Implement safe text extraction and command parsing after removing the explicit bot mention; only parse leading slash commands.
+- [x] Implement notes commands using only the current chat's records; bound list/search response sizes and require exact IDs for delete/cancel.
+- [x] Implement one-time reminders in the configured timezone, reject malformed/past local times, and keep each reminder bound to its originating chat.
+- [x] Implement a sequential scheduler with a 15-second default interval, a 24-hour catch-up window, overdue labeling, global expiry before claiming work, and retry of unsent due work.
+- [x] Implement `/tag-semua` only in groups when explicitly enabled; send with Baileys `mentionAll`, report failures in the source group, and never mass-mention individual members as fallback.
+- [x] Review the diff for privacy scope, command authorization, time parsing, scheduler retry semantics, and mention behavior.
+- [x] Commit as `feat: add notes reminders and group commands`.
 
 ### Task 3: Baileys lifecycle integration and user documentation
 
@@ -90,9 +90,9 @@
 - Route each incoming `notify` message to logging and command handling independently so logger failures or command failures are reported without crashing the connection loop.
 - Keep one reminder worker per process; make its active socket unavailable while disconnected and stop it before closing the database.
 
-- [ ] Wire configuration, storage, command handling, and scheduler into the current connect/reconnect/shutdown lifecycle.
-- [ ] Preserve QR login, self/status/newsletter filters, current JSONL format, and shutdown queue draining.
-- [ ] Add `.env.example` with safe placeholders; ignore `.env*` while keeping `.env.example` tracked, and ignore `data/`.
-- [ ] Rewrite the README setup, allowlist/group behavior, notes/reminders/`@all` commands, local data/backup guidance, and live-account verification boundary without AI references.
-- [ ] Review the final diff for clean lifecycle handling, configuration/privacy documentation, and public-repository hygiene.
-- [ ] Commit as `docs: document group assistant setup and commands`.
+- [x] Wire configuration, storage, command handling, and scheduler into the current connect/reconnect/shutdown lifecycle.
+- [x] Preserve QR login, self/status/newsletter filters, current JSONL format, and shutdown queue draining.
+- [x] Add `.env.example` with safe placeholders; ignore `.env*` while keeping `.env.example` tracked, and ignore `data/`.
+- [x] Rewrite the README setup, allowlist/group behavior, notes/reminders/`@all` commands, local data/backup guidance, and live-account verification boundary without AI references.
+- [x] Review the final diff for clean lifecycle handling, configuration/privacy documentation, and public-repository hygiene.
+- [x] Commit as `docs: document group assistant setup and commands`.
