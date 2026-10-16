@@ -157,6 +157,11 @@ export function createBotStore({ databasePath }) {
       WHERE id = ? AND status IN ('pending', 'sending')`).run(id).changes > 0
   }
 
+  function expireOverdueReminders(beforeMs) {
+    return db.prepare(`UPDATE reminders SET status = 'expired', lease_until_ms = NULL
+      WHERE due_at_ms < ? AND status IN ('pending', 'sending')`).run(beforeMs).changes
+  }
+
   return {
     close,
     addNote,
@@ -170,6 +175,7 @@ export function createBotStore({ databasePath }) {
     markReminderSent,
     retryReminder,
     expireReminder,
+    expireOverdueReminders,
   }
 }
 
