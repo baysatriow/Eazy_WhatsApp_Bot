@@ -1,6 +1,6 @@
 # Eazy WhatsApp Group Assistant
 
-**Tanggal:** 2026-10-16  
+**Tanggal:** 2026-10-16
 **Status:** Draft, menunggu persetujuan pemilik proyek
 
 ## Tujuan
