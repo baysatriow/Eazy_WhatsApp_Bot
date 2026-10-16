@@ -46,13 +46,15 @@
 **Interfaces:**
 - `loadConfig(environment = process.env)` loads `.env` once and returns `allowedNumbers: Set<string>`, `allowedGroups: Set<string>`, `groupRequireMention: boolean`, `tagAllEnabled: boolean`, `timeZone: string`, `databasePath: string`, and `logIncoming: boolean`.
 - `isCommandAllowed(message, { allowedNumbers, allowedGroups, groupRequireMention, botJid })` returns a boolean; compare phone-number JIDs and alternative PN JIDs, require a resolvable allowlisted number, and fail closed when a group sender is only an unresolved LID.
-- `createBotStore({ databasePath })` returns `close()`, `addNote({ chatId, text, createdAtMs })`, `listNotes(chatId, limit = 20)`, `searchNotes(chatId, query, limit = 20)`, `deleteNote(chatId, id)`, `addReminder({ chatId, text, dueAtMs, createdAtMs })`, `listPendingReminders(chatId)`, `cancelReminder(chatId, id)`, `claimDueReminders({ nowMs, retryBeforeMs, leaseUntilMs })`, `markReminderSent(id, sentAtMs)`, `retryReminder(id, nextAttemptAtMs)`, and `expireReminder(id)`.
+- `createBotStore({ databasePath })` returns `close()`, `addNote({ chatId, text, createdAtMs })`, `listNotes(chatId, limit = 20)`, `searchNotes(chatId, query, limit = 20)`, `deleteNote(chatId, id)`, `addReminder({ chatId, text, dueAtMs, createdAtMs })`, `listPendingReminders(chatId)`, `cancelReminder(chatId, id)`, `claimDueReminders({ nowMs, retryBeforeMs, leaseUntilMs })`, `markReminderSent(id, sentAtMs)`, `retryReminder(id, nextAttemptAtMs)`, `expireReminder(id)`, and `expireOverdueReminders(beforeMs)`.
 - Note methods take `chatId` and never query across chat IDs; failed deletes/cancels return `false`. Reminder methods persist UTC epoch milliseconds and delivery state; claims return rows moved to `sending` in one transaction.
+- `expireOverdueReminders(beforeMs)` globally expires pending/sending reminders whose due time is older than `beforeMs` and returns the number expired.
 
 - [ ] Add `dotenv` and `better-sqlite3@^12.4.1` dependencies while preserving the current Node engine range.
 - [ ] Implement `loadConfig` with a strict comma-separated phone allowlist; invalid entries make the command allowlist unusable, while `logIncoming` remains enabled by default.
 - [ ] Implement `isCommandAllowed` for direct and group messages; enforce optional `BOT_ALLOWED_GROUPS`, explicit bot mentions in groups, and fail-closed LID handling.
 - [ ] Implement one-file SQLite storage with parent-directory creation, busy timeout, WAL mode, versioned schema initialization, per-chat notes, and reminder retry/status fields.
+- [ ] Implement global expiration of pending/sending reminders older than the scheduler's 24-hour recovery cutoff.
 - [ ] Review the diff for allowlist parsing, cross-chat data isolation, SQLite error behavior, and compatibility with the declared Node releases.
 - [ ] Commit as `feat: add secure configuration and sqlite storage`.
 
@@ -70,7 +72,7 @@
 - [ ] Implement safe text extraction and command parsing after removing the explicit bot mention; only parse leading slash commands.
 - [ ] Implement notes commands using only the current chat's records; bound list/search response sizes and require exact IDs for delete/cancel.
 - [ ] Implement one-time reminders in the configured timezone, reject malformed/past local times, and keep each reminder bound to its originating chat.
-- [ ] Implement a sequential scheduler with a 15-second default interval, 24-hour catch-up window, overdue labeling, expiry beyond the window, and retry of unsent due work.
+- [ ] Implement a sequential scheduler with a 15-second default interval, a 24-hour catch-up window, overdue labeling, global expiry before claiming work, and retry of unsent due work.
 - [ ] Implement `/tag-semua` only in groups when explicitly enabled; send with Baileys `mentionAll`, report failures in the source group, and never mass-mention individual members as fallback.
 - [ ] Review the diff for privacy scope, command authorization, time parsing, scheduler retry semantics, and mention behavior.
 - [ ] Commit as `feat: add notes reminders and group commands`.
