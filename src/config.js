@@ -29,27 +29,18 @@ function parseAllowedGroups(value) {
   return new Set(entries)
 }
 
-function parseBoolean(value, defaultValue) {
-  if (value === undefined || value === null || String(value).trim() === '') return defaultValue
-  const normalized = String(value).trim().toLowerCase()
-  if (normalized === 'true') return true
-  if (normalized === 'false') return false
-  return defaultValue
-}
-
 export function loadConfig(environment = process.env) {
   loadDotenvOnce()
   return {
     allowedNumbers: parseAllowedNumbers(environment.BOT_ALLOWED_NUMBERS),
     allowedGroups: parseAllowedGroups(environment.BOT_ALLOWED_GROUPS),
-    groupRequireMention: parseBoolean(environment.BOT_GROUP_REQUIRE_MENTION, true),
-    tagAllEnabled: parseBoolean(environment.BOT_TAG_ALL_ENABLED, false),
+    tagAllEnabled: String(environment.BOT_TAG_ALL_ENABLED ?? '').trim().toLowerCase() === 'true',
     timeZone: typeof environment.BOT_TIME_ZONE === 'string' && environment.BOT_TIME_ZONE.trim()
       ? environment.BOT_TIME_ZONE.trim()
       : 'Asia/Jakarta',
     databasePath: typeof environment.BOT_DATABASE_PATH === 'string' && environment.BOT_DATABASE_PATH.trim()
       ? path.resolve(environment.BOT_DATABASE_PATH.trim())
       : DEFAULT_DATABASE_PATH,
-    logIncoming: parseBoolean(environment.BOT_LOG_INCOMING, true),
+    logIncoming: String(environment.BOT_LOG_INCOMING ?? 'true').trim().toLowerCase() !== 'false',
   }
 }

@@ -46,7 +46,6 @@ function senderNumberCandidates(key, isGroup) {
 export function isCommandAllowed(message, {
   allowedNumbers,
   allowedGroups,
-  groupRequireMention = true,
   botJid,
 } = {}) {
   const key = message?.key
@@ -55,7 +54,7 @@ export function isCommandAllowed(message, {
 
   const isGroup = chatId.endsWith('@g.us')
   if (isGroup && allowedGroups instanceof Set && allowedGroups.size > 0 && !allowedGroups.has(chatId)) return false
-  if (isGroup && groupRequireMention && !wasBotMentioned(message, botJid)) return false
+  if (isGroup && !wasBotMentioned(message, botJid)) return false
 
   const candidates = senderNumberCandidates(key, isGroup)
   // LID identities are deliberately not interpreted as phone numbers. A

@@ -11,6 +11,10 @@ export function startReminderScheduler({ store, getSocket, timeZone = 'Asia/Jaka
     hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
   })
   const zoneLabel = timeZone === 'Asia/Jakarta' ? 'WIB' : timeZone
+  // One full polling interval absorbs normal timer/scheduling delay. Anything
+  // older at first startup is recovery work and is labeled late immediately.
+  const lateLabelGraceMs = intervalMs
+  const schedulerStartedAtMs = Date.now()
   let stopped = false
   let timer = null
   let inFlight = Promise.resolve()
@@ -43,7 +47,9 @@ export function startReminderScheduler({ store, getSocket, timeZone = 'Asia/Jaka
       }
       // A cancellation can happen while an earlier send is awaiting WhatsApp.
       if (!store.listPendingReminders(reminder.chatId).some((row) => row.id === reminder.id && row.status === 'sending')) continue
-      const late = reminder.dueAtMs < sendAtMs
+      const overdueBeforeStartup = reminder.dueAtMs < schedulerStartedAtMs
+      const overdueBeyondPollingGrace = reminder.dueAtMs < sendAtMs - lateLabelGraceMs
+      const late = overdueBeforeStartup || overdueBeyondPollingGrace
       const label = late ? 'Pengingat terlambat' : 'Pengingat'
       const text = `${label} #${reminder.id}\nJadwal: ${formatter.format(reminder.dueAtMs)} ${zoneLabel}\n${reminder.text}`
       try {
