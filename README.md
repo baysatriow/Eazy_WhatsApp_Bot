@@ -57,13 +57,12 @@ Biarkan proses berjalan untuk menerima pesan dan mengirim pengingat. `Ctrl+C` me
 | --- | --- | --- |
 | `BOT_ALLOWED_NUMBERS` | kosong | Nomor pengirim yang boleh menjalankan perintah; dipisahkan koma. |
 | `BOT_ALLOWED_GROUPS` | kosong | Opsional: ID grup yang boleh menerima perintah, dipisahkan koma. Kosong mengizinkan semua grup yang diikuti akun bot. |
-| `BOT_GROUP_REQUIRE_MENTION` | `true` | Wajib mention bot dalam pesan perintah grup. Set `false` hanya jika ingin pengirim yang diizinkan dapat menjalankan perintah tanpa mention. |
 | `BOT_TAG_ALL_ENABLED` | `false` | Mengaktifkan `/tag-semua` khusus grup. |
 | `BOT_TIME_ZONE` | `Asia/Jakarta` | Zona IANA untuk input jadwal, tampilan waktu, dan tanggal log. |
 | `BOT_DATABASE_PATH` | `data/eazy-whatsapp-bot.sqlite` | Lokasi SQLite; path relatif dihitung dari folder tempat proses dijalankan. |
 | `BOT_LOG_INCOMING` | `true` | Catat pesan masuk ke terminal dan JSONL. Set `false` untuk mematikan keduanya. |
 
-Nomor harus berisi 8–15 digit dan tidak diawali `0`. Daftar nomor kosong atau memiliki satu entri tidak valid menonaktifkan **seluruh perintah**. Daftar grup tidak kosong yang salah format menolak seluruh perintah grup. Nilai boolean memakai `true` atau `false`; nilai yang tidak dikenali memakai default.
+Nomor harus berisi 8–15 digit dan tidak diawali `0`. Daftar nomor kosong atau memiliki satu entri tidak valid menonaktifkan **seluruh perintah**. Daftar grup tidak kosong yang salah format menolak seluruh perintah grup. Perintah grup selalu memerlukan mention bot; syarat ini tidak dapat dimatikan melalui konfigurasi. `BOT_TAG_ALL_ENABLED` hanya aktif dengan nilai `true`, sedangkan log hanya mati dengan nilai `false`.
 
 Contoh pembatasan grup:
 
@@ -117,7 +116,7 @@ Catatan dan jadwal mengikuti **chat asal**. Data chat pribadi tidak muncul di gr
 
 Waktu default adalah **Asia/Jakarta (WIB)**; timestamp disimpan dalam UTC. Gunakan format tanggal/jam persis seperti contoh. Waktu lampau, tanggal yang tidak valid, serta waktu yang ambigu atau tidak ada pada zona dengan pergantian jam ditolak.
 
-Worker memeriksa jadwal sekitar setiap 15 detik ketika terhubung. Bot dan komputer/server harus tetap hidup; saat proses mati atau tidak terhubung, pengingat belum dapat dikirim. Setelah tersambung kembali, jadwal terlambat hingga 24 jam dicoba dengan label **Pengingat terlambat**. Jadwal yang lebih lama ditandai kedaluwarsa dan tidak dikirim. Pengiriman gagal dicoba kembali dengan jeda bertahap sampai batas kedaluwarsa.
+Worker memeriksa jadwal sekitar setiap 15 detik ketika terhubung. Bot dan komputer/server harus tetap hidup; saat proses mati atau tidak terhubung, pengingat belum dapat dikirim. Jadwal yang sudah jatuh tempo sebelum proses mulai kembali atau terlambat lebih dari satu interval pemeriksaan dikirim dengan label **Pengingat terlambat**; jeda normal saat menunggu pemeriksaan berikutnya tidak diberi label terlambat. Jadwal yang terlambat hingga 24 jam dicoba, sedangkan jadwal yang lebih lama ditandai kedaluwarsa dan tidak dikirim. Pengiriman gagal dicoba kembali dengan jeda bertahap sampai batas kedaluwarsa.
 
 Data jadwal disimpan sebelum bot mengirim konfirmasi. Status terkirim disimpan setelah pengiriman berhasil. Jika proses mati tepat setelah WhatsApp menerima pesan tetapi sebelum status tersimpan, pengingat dapat terkirim dua kali setelah pemulihan. Pembatalan tidak dapat menarik kembali pesan yang sudah dalam proses kirim. Jalankan satu proses bot untuk satu folder sesi/database.
 

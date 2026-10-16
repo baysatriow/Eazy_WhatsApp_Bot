@@ -44,8 +44,8 @@
 - Modify: `package-lock.json`
 
 **Interfaces:**
-- `loadConfig(environment = process.env)` loads `.env` once and returns `allowedNumbers: Set<string>`, `allowedGroups: Set<string>`, `groupRequireMention: boolean`, `tagAllEnabled: boolean`, `timeZone: string`, `databasePath: string`, and `logIncoming: boolean`.
-- `isCommandAllowed(message, { allowedNumbers, allowedGroups, groupRequireMention, botJid })` returns a boolean; compare phone-number JIDs and alternative PN JIDs, require a resolvable allowlisted number, and fail closed when a group sender is only an unresolved LID.
+- `loadConfig(environment = process.env)` loads `.env` once and returns `allowedNumbers: Set<string>`, `allowedGroups: Set<string>`, `tagAllEnabled: boolean`, `timeZone: string`, `databasePath: string`, and `logIncoming: boolean`.
+- `isCommandAllowed(message, { allowedNumbers, allowedGroups, botJid })` returns a boolean; compare phone-number JIDs and alternative PN JIDs, require a resolvable allowlisted number, always require an explicit bot mention in groups, and fail closed when a group sender is only an unresolved LID.
 - `createBotStore({ databasePath })` returns `close()`, `addNote({ chatId, text, createdAtMs })`, `listNotes(chatId, limit = 20)`, `searchNotes(chatId, query, limit = 20)`, `deleteNote(chatId, id)`, `addReminder({ chatId, text, dueAtMs, createdAtMs })`, `listPendingReminders(chatId)`, `cancelReminder(chatId, id)`, `claimDueReminders({ nowMs, retryBeforeMs, leaseUntilMs })`, `markReminderSent(id, sentAtMs)`, `retryReminder(id, nextAttemptAtMs)`, `expireReminder(id)`, and `expireOverdueReminders(beforeMs)`.
 - Note methods take `chatId` and never query across chat IDs; failed deletes/cancels return `false`. Reminder methods persist UTC epoch milliseconds and delivery state; claims return rows moved to `sending` in one transaction.
 - `expireOverdueReminders(beforeMs)` globally expires pending/sending reminders whose due time is older than `beforeMs` and returns the number expired.

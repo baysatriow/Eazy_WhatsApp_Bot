@@ -68,14 +68,13 @@ Kembangkan `Eazy_WhatsApp_Bot` dari pencatat pesan menjadi asisten WhatsApp prib
 ```dotenv
 BOT_ALLOWED_NUMBERS=
 BOT_ALLOWED_GROUPS=
-BOT_GROUP_REQUIRE_MENTION=true
 BOT_TAG_ALL_ENABLED=false
 BOT_TIME_ZONE=Asia/Jakarta
 BOT_DATABASE_PATH=data/eazy-whatsapp-bot.sqlite
 BOT_LOG_INCOMING=true
 ```
 
-`BOT_ALLOWED_GROUPS` opsional. Jika kosong, nomor yang diizinkan dapat memakai bot di grup mana pun yang diikuti akun tertaut, tetap dengan syarat mention. Jika diisi, perintah grup dibatasi ke ID grup yang dicantumkan. `BOT_LOG_INCOMING=true` mempertahankan fungsi logger saat ini; mematikan bot command tidak mematikan pencatatan pesan.
+`BOT_ALLOWED_GROUPS` opsional. Jika kosong, nomor yang diizinkan dapat memakai bot di grup mana pun yang diikuti akun tertaut, tetap dengan syarat mention eksplisit yang wajib. Syarat mention grup tidak dapat dimatikan melalui konfigurasi. Jika daftar grup diisi, perintah dibatasi ke ID grup yang dicantumkan. `BOT_LOG_INCOMING=true` mempertahankan fungsi logger saat ini; mematikan bot command tidak mematikan pencatatan pesan.
 
 ## Penyimpanan
 
